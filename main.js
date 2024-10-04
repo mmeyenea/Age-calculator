@@ -1,39 +1,114 @@
-const day = document.querySelector('#day');
-const month = document.querySelector('#month');
-const year = document.querySelector('#year');
-const btn = document.querySelector('button');
-
-const newDate = document.querySelector('#newDate');
-const newMonth = document.querySelector('#newMonth');
-const newYear = document.querySelector('#newYear');
+// globall variables
+const outputYear = document.querySelector('.output-year');
+const outputMonth = document.querySelector('.output-month');
+const outputDay = document.querySelector('.output-day');
+const sumbitBtn = document.querySelector('.calculate-btn');
+console.log(outputMonth);
 
 
-const date = new Date()    
-btn.addEventListener('click' , ()=>{
+// input element variables
+const inputYear = document.querySelector('#year');
+const inputMonth = document.querySelector('#month');
+const inputDay = document.querySelector('#day');
+console.log(inputDay);
 
-    function generateAge() {
-        const yob = date.getFullYear() 
-        const cyob = yob - year.value
-        newYear.innerHTML = cyob
-        console.log(cyob);
-        // console.log(yob);
+// error variables
+const errorYear = document.querySelector('.error-year');
+const errorMonth = document.querySelector('.error-month');
+const errorDay = document.querySelector('.error-day');
+console.log(errorDay);
+
+let invalid = false;
+sumbitBtn.addEventListener('click', calculateDate);
+// sumbitBtn.addEventListener("click", warningPop);
+inputDay.addEventListener('input', e =>{
+    if(+inputDay.value > 31){
+        errorDay.textContent ="Must Be a Valid Date";
+        invalid=false;
+        return;
+    }else{
+        invalid= true;
+        errorDay.textContent = "";
     }
-    function currentMonth() {    
-        const mob = date.getMonth()
-        const cmob = mob - month.value
-        newMonth.innerHTML = cmob
-        console.log(cmob);
-        
-        
+    if(+inputDay.value === 0){
+        invalid = false;
+        errorDay.textContent = "this field is required";
+        invalid = false;
+        return;
+    }else{
+        errorDay.textContent = "";
     }
-    function currentDate() {    
-        const dob = date.getDate()
-        const cdob = dob - day.value
-        newDate.innerHTML = cdob
-        console.log(cdob);
-        
+});
+
+inputMonth.addEventListener('input', e =>{
+    if(+inputMonth.value > 12){
+        errorMonth.textContent ="Must Be a Valid Date";
+        invalid=false;
+        return;
+    }else{
+        invalid= true;
+        errorMonth.textContent = "";
     }
-    currentDate()
-    currentMonth()
-    generateAge()
-})
+    if(+inputMonth.value === 0){
+        invalid = false;
+        errorMonth.textContent = "This field is required";
+        invalid = false;
+        return;
+    }else{
+        errorMonth.textContent = "";
+    }
+});
+
+inputYear.addEventListener('input', e =>{
+    if(+inputYear.value > 2024){
+        errorYear.textContent ="Must Be a Valid Date";
+        invalid=false;
+        return;
+    }else{
+        invalid= true;
+        errorYear.textContent = "";
+    }
+    if(+inputYear.value === 0){
+        invalid = false;
+        errorYear.textContent = "this field is required";
+        invalid = false;
+        return;
+    }else{
+        errorYear.textContent = "";
+    }
+});
+
+
+function calculateDate(){
+    if (invalid){
+        let birthDate = `${inputMonth.value}/${inputDay.value}/${inputYear.value}`;
+        console.log(birthDate);
+        let birthDateObj = new Date(birthDate);
+        let ageDiffMili = Date.now()-birthDateObj;
+        let ageDate =new Date(ageDiffMili);
+        let ageYears = ageDate.getUTCFullYear()-1970;
+        let ageMonth = ageDate.getUTCMonth();
+        let ageDay = ageDate.getUTCDate() -1;
+        // display output
+        outputDay.textContent =ageDay;
+        outputMonth.textContent = ageMonth;
+        outputYear.textContent = ageYears;
+    }else{
+        alert('Oops not allowed');
+    }
+}
+
+
+
+// function warningPop(birthDate) {
+//     ageMonth = new Date();
+//     const target = new Date(birthDate);
+
+//     if (ageMonth < target) {
+//         alert("The specified date and month have not yet been attained.");
+//     }
+// }
+
+// // Example usage:
+// const targetDate = "2024-12-25"; // Format: YYYY-MM-DD
+// warningPop(targetDate);
